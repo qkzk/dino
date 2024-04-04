@@ -25,17 +25,20 @@ class Dino:
 
     def __init__(self):
         self.actor = Actor("dino")
+        self.actor2 = Actor("dino2")
         self.x: int
         self.y: int
         self.speed: int
         self.bottom: int
         self.score: int
         self.background: str
+        self.count: int
 
         self.reset()
         self.place()
 
     def reset(self):
+        self.count = 0
         self.x = WIDTH // 8
         self.y = HEIGHT - self.actor.height
         self.bottom = self.y
@@ -45,8 +48,10 @@ class Dino:
 
     def place(self):
         self.actor.topleft = self.x, self.y
+        self.actor2.topleft = self.x, self.y
 
     def update(self):
+        self.count += 1
         self.speed += self.GRAVITY
         self.y += self.speed
         if self.y >= self.bottom:
@@ -54,8 +59,11 @@ class Dino:
             self.speed = 0
         self.place()
 
+    def is_jumping(self):
+        return self.y < self.bottom
+
     def jump(self):
-        if self.y >= self.bottom:
+        if not self.is_jumping():
             self.speed = -35 * self.GRAVITY
             sounds.mario.play()
         self.place()
@@ -76,6 +84,15 @@ class Dino:
                 self.score += 1
                 if self.score >= 3 and (self.score % 3) == 0:
                     self.background = choice(BACKGROUNDS)
+
+    def draw(self):
+        if self.is_jumping():
+            self.actor.draw()
+            return
+        if (self.count // 10) % 2 == 0:
+            self.actor.draw()
+        else:
+            self.actor2.draw()
 
     def draw_score(self):
         screen.draw.text(
@@ -208,7 +225,7 @@ def draw():
     draw_floor()
     clouds.draw()
 
-    dino.actor.draw()
+    dino.draw()
     for cactus in cactuses:
         cactus.draw()
     draw_jump_marker()
