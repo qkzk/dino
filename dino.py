@@ -7,6 +7,8 @@ WIDTH = 1024
 HEIGHT = 768
 TITLE = "DINO JUMP"
 
+SPEED = WIDTH // 100
+
 BACKGROUNDS = [
     "#004400",
     "#000066",
@@ -116,7 +118,6 @@ class Cactus:
         self.place()
 
     def reset(self):
-        self.speed = WIDTH // 100
         self.y = HEIGHT - self.actor.height
         self.passed = False
         self.width = self.actor.width
@@ -133,7 +134,7 @@ class Cactus:
                 self.x = cactus.x + 1600
 
     def update(self):
-        self.x -= self.speed
+        self.x -= SPEED
         if self.x < -self.actor.width:
             self.reset_x()
             self.passed = False
@@ -188,7 +189,7 @@ class Road:
     def update(self):
         for actor in self.actors:
             x, y = actor.topleft
-            x -= 1
+            x -= SPEED
             if x < -self.SP_WIDTH:
                 x = self.MAX
             actor.topleft = x, y
