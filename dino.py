@@ -31,6 +31,7 @@ class Dino:
         self.bottom: int
         self.score: int
         self.background: str
+
         self.reset()
         self.place()
 
@@ -40,7 +41,7 @@ class Dino:
         self.bottom = self.y
         self.speed = 0
         self.score = 0
-        self.background: str = "#004400"
+        self.background: str = choice(BACKGROUNDS)
 
     def place(self):
         self.actor.topleft = self.x, self.y
